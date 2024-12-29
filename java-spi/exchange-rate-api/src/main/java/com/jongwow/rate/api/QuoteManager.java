@@ -6,5 +6,5 @@ import java.util.List;
 
 // Service
 public interface QuoteManager {
-    List<Quote> getQuotes(String baseCurrency, LocalDate localDate);
+    List<Quote> getQuotes(List<String> coins);
 }

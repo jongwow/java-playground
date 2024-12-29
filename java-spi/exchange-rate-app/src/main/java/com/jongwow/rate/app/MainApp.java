@@ -12,7 +12,10 @@ public class MainApp {
 
         ExchangeRate.providers().forEach(provider -> {
             System.out.println("Retreiving CryptoCurrency quotes from provider :" + provider);
-            List<Quote> quotes = provider.create().getQuotes("FALSE", LocalDate.now());
+            // Available: KRW-BTC, KRW-ETH, KRW-XRP, KRW-DOGE
+            List<String> coins = List.of("KRW-BTC"); //
+            System.out.println("coins: " + coins);
+            List<Quote> quotes = provider.create().getQuotes(coins);
             System.out.println(String.format("%14s%12s|%12s", "","Ask", "Bid"));
             System.out.println("----------------------------------------");
             quotes.forEach(quote -> {

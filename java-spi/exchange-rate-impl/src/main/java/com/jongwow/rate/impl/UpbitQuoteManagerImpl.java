@@ -16,15 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 public class UpbitQuoteManagerImpl implements QuoteManager {
-    static final String URL_PROVIDER = "https://api.upbit.com/v1/orderbook?level=0&markets=KRW-BTC&markets=KRW-ETH&markets=KRW-XRP&KRW-DOGE";
+    // markets=KRW-BTC&markets=KRW-ETH&markets=KRW-XRP&KRW-DOGE
+    static final String URL_PROVIDER = "https://api.upbit.com/v1/orderbook?level=0";
     OkHttpClient client = new OkHttpClient();
 
     @Override
-    public List<Quote> getQuotes(String baseCurrency, LocalDate date) {
+    public List<Quote> getQuotes(List<String> coins) {
         System.out.println("GetQuote called");
         List<Quote> quotes = new ArrayList<>();
-
-        String response = doGetRequest(URL_PROVIDER);
+        String response = doGetRequest(URL_PROVIDER+makeUrlParams(coins));
         if (response != null) {
             List<Quote> maps = maps(response);
             if (maps != null) {
@@ -32,6 +32,12 @@ public class UpbitQuoteManagerImpl implements QuoteManager {
             }
         }
         return quotes;
+    }
+
+    public String makeUrlParams(List<String> markets){
+        List<String> marketParams = markets.stream().map(market -> "markets=" + market).toList();
+        String param = String.join("&", marketParams);
+        return "&" + param;
     }
 
     public List<Quote> maps(String response) {
